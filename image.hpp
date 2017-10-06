@@ -19,6 +19,8 @@ public:
     void open(std::string);
     void save(std::string, std::string);
 
-    std::unique_ptr<uint8_t[]> vectorize_mat();
-    cv::Mat vector_to_mat(std::unique_ptr<uint8_t[]>&);
+    uint8_t* vectorize_mat();
+    static cv::Mat vector_to_mat(uint8_t*, int, int);
+
+    static uint8_t* sort(uint8_t*, int, int, bool);
 };

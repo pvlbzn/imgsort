@@ -1,6 +1,4 @@
 #include <string>
-#include <iostream>
-#include <memory>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -42,8 +40,8 @@ void Image::save(std::string where="./", std::string name="out.jpg") {
 }
 
 
-std::unique_ptr<uint8_t[]> Image::vectorize_mat() {
-    auto row_vector = std::unique_ptr<uint8_t[]>{ new uint8_t[rows*cols] };
+uint8_t* Image::vectorize_mat() {
+    auto row_vector = new uint8_t[rows*cols];
 
     int index = 0;
     for (int i = 0; i < rows; i++) {
@@ -58,6 +56,29 @@ std::unique_ptr<uint8_t[]> Image::vectorize_mat() {
 
 
 // Construct a Mat from a vector. Reverse of vectorization.
-cv::Mat Image::vector_to_mat(std::unique_ptr<uint8_t[]>& row_vector) {
-    return cv::Mat(rows, cols, CV_8UC1, row_vector.get());
+cv::Mat Image::vector_to_mat(uint8_t* row_vector, int rows, int cols) {
+    return cv::Mat(rows, cols, CV_8UC1, row_vector);
+}
+
+
+uint8_t* Image::sort(uint8_t* in, int len, int k, bool reverse=false) {
+    auto res = new uint8_t[len]();
+    auto tmp = new int[k+1]();
+
+    for (int i = 0; i < len; i++) {
+        tmp[in[i]] += 1;
+    }
+
+    int counter = 0;
+    for (int i = 0; i < k+1; i++) {
+        while (tmp[i]) {
+            res[counter] += i;
+            tmp[i]       -= 1;
+            counter      += 1;
+        }
+    }
+   
+    delete[] tmp;
+
+    return res; 
 }
