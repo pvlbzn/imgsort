@@ -9,8 +9,8 @@ private:
 
 public:
     Image() {};
-    Image(cv::Mat);
-    Image(std::string, bool);
+    Image(cv::Mat&);
+    Image(std::string);
     ~Image() {};
 
     uint get_rows() { return rows; };
@@ -19,8 +19,8 @@ public:
     void open(std::string);
     void save(std::string, std::string);
 
-    uint8_t* vectorize_mat();
-    static cv::Mat vector_to_mat(uint8_t*, int, int);
+    uint8_t* vectorize();
 
-    static uint8_t* sort(uint8_t*, int, int, bool);
+    static cv::Mat vector_to_mat(uint8_t*, int, int);
+    static uint8_t* sort(uint8_t*, int, int);
 };

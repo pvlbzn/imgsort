@@ -8,7 +8,7 @@
 
 
 // Construct an Image using existing matrix
-Image::Image(cv::Mat m) {
+Image::Image(cv::Mat& m) {
     mat = m;
     rows = m.rows;
     cols = m.cols;
@@ -16,12 +16,11 @@ Image::Image(cv::Mat m) {
 
 
 // Construct an Image using image from a given path
-Image::Image(std::string path, bool is_bw=true) {
+Image::Image(std::string path) {
     if (path.empty())
         throw std::runtime_error("path error");
     
-    if (is_bw)
-        mat = cv::imread(path, CV_LOAD_IMAGE_GRAYSCALE);
+    mat = cv::imread(path, CV_LOAD_IMAGE_GRAYSCALE);
 
     if (!mat.data)
         throw std::runtime_error("no data error");
@@ -40,7 +39,7 @@ void Image::save(std::string where="./", std::string name="out.jpg") {
 }
 
 
-uint8_t* Image::vectorize_mat() {
+uint8_t* Image::vectorize() {
     auto row_vector = new uint8_t[rows*cols];
 
     int index = 0;
@@ -61,7 +60,7 @@ cv::Mat Image::vector_to_mat(uint8_t* row_vector, int rows, int cols) {
 }
 
 
-uint8_t* Image::sort(uint8_t* in, int len, int k, bool reverse=false) {
+uint8_t* Image::sort(uint8_t* in, int len, int k) {
     auto res = new uint8_t[len]();
     auto tmp = new int[k+1]();
 
